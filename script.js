@@ -1,41 +1,33 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const questionList = document.querySelector(".question-list");
-    const modal = document.getElementById("modal");
-    const closeModal = document.getElementById("close");
-    const reviewText = document.getElementById("review-text");
+// Soru numaraları ve konuları eşleştirmek için bir nesne oluşturuyoruz
+const topics = {
+    1: "Anatomi",
+    2: "Fizyoloji",
+    3: "Histoloji",
+    4: "Patoloji",
+    5: "Biyokimya",
+    // Burada 80'e kadar devam edin
+    80: "Farmakoloji"
+};
 
-    // Soruların çalışma önerilerini içeren nesne
-    const reviewData = {
-        1: "Slayt 1 - Sayfa 5: Anatomi giriş konularını tekrar ediniz.",
-        2: "Slayt 3 - Sayfa 12: Sinir sistemi tekrar edilmelidir.",
-        3: "Slayt 5 - Sayfa 20: Dolaşım sistemi konuları önemlidir.",
-        // Diğer sorular için çalışma önerileri buraya eklenebilir
-    };
+// Soru numaralarını sayfaya ekleme
+const questionList = document.querySelector('.question-list');
+for (let i = 1; i <= 80; i++) {
+    const questionDiv = document.createElement('div');
+    questionDiv.classList.add('question');
+    questionDiv.textContent = i;
+    questionDiv.onclick = () => showPopup(i);
+    questionList.appendChild(questionDiv);
+}
 
-    // 1'den 50'ye kadar tüm soruları listeye ekleyin
-    for (let i = 1; i <= 50; i++) {
-        const question = document.createElement("div");
-        question.classList.add("question");
-        question.textContent = `${i}. Soru`;
+// Popup gösterme fonksiyonu
+function showPopup(questionNumber) {
+    const popup = document.getElementById('popup');
+    const popupContent = document.getElementById('popup-content');
+    popupContent.textContent = `Bu soruyu yanlış yaptıysanız, ${topics[questionNumber]} çalışmalısınız.`;
+    popup.style.display = 'block';
+}
 
-        // Tıklama olayını her soru için tanımla
-        question.addEventListener("click", function () {
-            reviewText.textContent = reviewData[i] || "Bu soruyu yanlış yaptıysanız, ilgili konuları tekrar ediniz!";
-            modal.style.display = "block";
-        });
-
-        // Soruyu listeye ekleyin
-        questionList.appendChild(question);
-    }
-
-    // Modal'ı kapatma işlevi
-    closeModal.onclick = function () {
-        modal.style.display = "none";
-    };
-
-    window.onclick = function (event) {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
-    };
-});
+// Popup kapatma fonksiyonu
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+}
